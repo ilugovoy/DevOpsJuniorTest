@@ -40,35 +40,43 @@
 ## Структура
 ```text
 ├── README.md
-├── all.yml
-├── inventory.ini
-└── roles
-    ├── docker_compose
-    │   ├── defaults
-    │   │   └── main.yml
-    │   ├── files
-    │   │   ├── Dockerfile
-    │   │   └── docker-compose.yml
-    │   ├── handlers
-    │   │   └── main.yaml
-    │   ├── src
-    │   │   └── index.php
-    │   └── tasks
-    │       └── main.yaml
-    ├── nginx
-    │   ├── defaults
-    │   │   └── main.yml
-    │   ├── handlers
-    │   │   └── main.yaml
-    │   ├── tasks
-    │   │   └── main.yaml
-    │   └── templates
-    │       └── nginx.conf.j2
-    └── preconfig
-        ├── handlers
-        │   └── main.yaml
-        └── tasks
-            └── main.yaml
+├── inventories
+│   └── inventory.ini
+└── playbooks
+    ├── playbook.yml
+    └── roles
+        ├── docker_compose
+        │   ├── defaults
+        │   │   └── main.yml
+        │   ├── files
+        │   │   ├── Dockerfile
+        │   │   └── docker-compose.yml
+        │   ├── handlers
+        │   │   └── main.yaml
+        │   ├── meta
+        │   │   └── main.yaml
+        │   ├── src
+        │   │   └── index.php
+        │   └── tasks
+        │       └── main.yaml
+        ├── nginx
+        │   ├── defaults
+        │   │   └── main.yml
+        │   ├── handlers
+        │   │   └── main.yaml
+        │   ├── meta
+        │   │   └── main.yaml
+        │   ├── tasks
+        │   │   └── main.yaml
+        │   └── templates
+        │       └── nginx.conf.j2
+        └── preconfig
+            ├── handlers
+            │   └── main.yaml
+            ├── meta
+            │   └── main.yaml
+            └── tasks
+                └── main.yaml
 ```
 
 ## Примечания
