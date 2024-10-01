@@ -1,0 +1,6 @@
+---
+- name: Перезапустить контейнер web
+  community.docker.docker_compose:
+    project_src: "/home/{{ ansible_user }}/php_app"
+    restarted: true
+  when: inventory_hostname == 'service_name'

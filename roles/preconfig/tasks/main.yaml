@@ -1,0 +1,73 @@
+---
+- name: Создать домашнюю директорию проекта
+  file:
+    path: "/home/{{ ansible_user }}/php_app"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0755'
+
+- name: Установка Nginx, PHP и необходимых модулей
+  apt:
+    name:
+      - nginx
+      - php
+      - php-fpm
+      - php-mysql
+      - python3-docker
+    state: present
+    update_cache: yes
+
+- name: Установка необходимых пакетов для работы с Docker
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+      - rsync
+    state: present
+    update_cache: yes
+
+- name: Добавление GPG ключа официального репозитория Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Добавление репозитория Docker
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+    state: present
+
+- name: Установка необходимых пакетов Docker
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+    update_cache: yes
+
+- name: Проверяем запущен ли докер
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Проверяем наличие группы docker
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: Добавление пользователя в группу docker
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+  register: user_add_result
+
+- name: Информирование о необходимости перезапуска сессии
+  debug:
+    msg: "Пользователь {{ ansible_user }} добавлен в группу docker. Далее служба ssh будет перезапущена"
+  when: user_add_result.changed

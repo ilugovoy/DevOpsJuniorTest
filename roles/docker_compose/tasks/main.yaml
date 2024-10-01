@@ -1,0 +1,30 @@
+---
+- name: Копирование Dockerfile на удалённый сервер
+  copy:
+    src: Dockerfile
+    dest: "/home/{{ ansible_user }}/php_app/Dockerfile"
+
+- name: Копирование docker-compose.yml на удалённый сервер
+  copy:
+    src: files/docker-compose.yml
+    dest: "/home/{{ ansible_user }}/php_app/docker-compose.yml"
+
+- name: Копирование .env файла на удалённый сервер
+  copy:
+    src: .env
+    dest: "/home/{{ ansible_user }}/php_app/.env"
+
+- name: Синхронизация файлов исходного кода с файлами на удалённом сервере
+  ansible.builtin.synchronize:
+    mode: push
+    src: src/
+    dest: "/home/{{ ansible_user }}/php_app/src/"
+    recursive: yes
+    rsync_opts:
+      - "--rsync-path='sudo -u {{ ansible_user }} rsync'"  # Для запуска без ввода пароля
+  notify: Перезапустить контейнер web
+
+- name: Запуск docker-compose
+  command: docker compose -f "/home/{{ ansible_user }}/php_app/docker-compose.yml" up -d
+  args:
+    chdir: "/home/{{ ansible_user }}/php_app" 

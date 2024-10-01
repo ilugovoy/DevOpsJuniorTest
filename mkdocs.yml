@@ -1,0 +1,7 @@
+site_name: Документация
+nav:
+    - Главная: index.md
+    - Роли:
+        - Docker Compose: roles/docker_compose.md
+        - Nginx: roles/nginx.md
+        - Preconfig: roles/preconfig.md
