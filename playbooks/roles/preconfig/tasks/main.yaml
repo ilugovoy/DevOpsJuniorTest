@@ -28,7 +28,6 @@
       - software-properties-common
       - rsync
     state: present
-    update_cache: true
 
 - name: Добавление GPG ключа официального репозитория Docker
   apt_key:
@@ -48,7 +47,6 @@
       - docker-ce-cli
       - containerd.io
     state: present
-    update_cache: true
 
 - name: Проверяем запущен ли докер
   service:
