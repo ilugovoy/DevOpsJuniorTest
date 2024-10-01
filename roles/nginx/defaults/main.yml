@@ -5,6 +5,7 @@ nginx_error_log: /var/log/nginx/error.log
 nginx_error_log_level: notice
 nginx_pid_file: /var/run/nginx.pid
 nginx_worker_connections: 1024
+# yamllint disable-line rule:line-length
 nginx_log_format: '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for"'
 nginx_access_log: /var/log/nginx/access.log
 nginx_keepalive_timeout: 65

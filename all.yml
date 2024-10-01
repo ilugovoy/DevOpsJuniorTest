@@ -1,4 +1,5 @@
 ---
+- name: Запуск плейбука
 - hosts: test
   become: true
   roles:

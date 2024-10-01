@@ -19,12 +19,14 @@
     mode: push
     src: src/
     dest: "/home/{{ ansible_user }}/php_app/src/"
-    recursive: yes
+    recursive: true
     rsync_opts:
+      # yamllint disable-line rule:line-length
       - "--rsync-path='sudo -u {{ ansible_user }} rsync'"  # Для запуска без ввода пароля
   notify: Перезапустить контейнер web
 
 - name: Запуск docker-compose
+  # yamllint disable-line rule:line-length
   command: docker compose -f "/home/{{ ansible_user }}/php_app/docker-compose.yml" up -d
   args:
-    chdir: "/home/{{ ansible_user }}/php_app" 
+    chdir: "/home/{{ ansible_user }}/php_app"

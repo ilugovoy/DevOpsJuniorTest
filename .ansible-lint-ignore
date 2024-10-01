@@ -1,1 +1,3 @@
-# позволяет указать пути к файлам или шаблонам, которые должны быть исключены из процесса линтинга
+# Игнорировать ошибки длины строки в следующих файлах
+rules/docker_compose/meta/main.yaml line-length
+roles/nginx/meta/main.yaml line-length
