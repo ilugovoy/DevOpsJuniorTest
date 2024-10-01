@@ -1,4 +1,12 @@
 ---
+- name: Определение app_dir
+  set_fact:
+    app_dir: "/home/{{ ansible_user }}/php_app"
+
+- name: Определение docker_compose_file
+  set_fact:
+    docker_compose_file: "{{ app_dir }}/docker-compose.yml"
+
 - name: Копирование Dockerfile на удалённый сервер
   copy:
     src: Dockerfile
@@ -8,6 +16,11 @@
   copy:
     src: files/docker-compose.yml
     dest: "/home/{{ ansible_user }}/php_app/docker-compose.yml"
+
+- name: Копирование init.sql на удалённый сервер
+  copy:
+    src: init.sql
+    dest: "/home/{{ ansible_user }}/php_app/init.sql"
 
 - name: Копирование .env файла на удалённый сервер
   copy:
@@ -26,7 +39,10 @@
   notify: Перезапустить контейнер web
 
 - name: Запуск docker-compose
-  # yamllint disable-line rule:line-length
-  command: docker compose -f "/home/{{ ansible_user }}/php_app/docker-compose.yml" up -d
+  ansible.builtin.shell: docker compose -f "/home/{{ ansible_user }}/php_app/docker-compose.yml" up -d
   args:
     chdir: "/home/{{ ansible_user }}/php_app"
+  register: docker_compose_result
+  failed_when: docker_compose_result.rc != 0
+  retries: 5
+  delay: 15

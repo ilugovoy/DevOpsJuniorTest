@@ -12,6 +12,7 @@
 - [Примечания](#примечания)
 - [Запуск](#запуск)
 - [Документация](#документация)
+- [Запуск и инициализация базы данных](#запуск-и-инициализация-базы-данных)
 - [Проверка качества кода](#проверка-качества-кода)
 	- [Использование pre-commit](#использование-pre-commit)
 	- [Использование ansible-lint](#использование-ansible-lint)
@@ -51,7 +52,9 @@
    │   │   └── main.yml
    │   ├── files
    │   │   ├── Dockerfile
-   │   │   └── docker-compose.yml
+   │   │   ├── docker-compose.yml
+   │   │   ├── init.sql
+   │   │   └── .env
    │   ├── handlers
    │   │   └── main.yaml
    │   ├── meta
@@ -127,6 +130,50 @@
 
 ![Docs](pictures/doc_review.png)
 
+</p>
+</details>
+
+
+## Запуск и инициализация базы данных
+Роль `docker_compose` в том числе инициализирует базу данных, проверить её состояние можно на удалённом сервере.
+
+<details>
+<summary>Проверка существования базы данных и таблицы</summary>
+</p>
+
+Когда контейнеры запустились можно вручную проверить так, выполнив команды на удалённом сервере:
+```bash
+docker exec -it db mysql -u root -p # и ввести пароль
+SHOW TABLES;
+DESCRIBE app_table;
+```
+</p>
+</details>
+
+<details>
+<summary>Пример вывода</summary>
+</p>
+
+```bash
+user@ubuntu-server:~/php_app$ docker exec -it db mysql -u root -p
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_database |
++--------------------+
+| app_table          |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> DESCRIBE app_table;
++---------+---------------------+------+-----+---------+----------------+
+| Field   | Type                | Null | Key | Default | Extra          |
++---------+---------------------+------+-----+---------+----------------+
+| id      | bigint(20) unsigned | NO   | PRI | NULL    | auto_increment |
+| content | text                | NO   |     | NULL    |                |
+| status  | text                | NO   |     | NULL    |                |
++---------+---------------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+```
 </p>
 </details>
 
