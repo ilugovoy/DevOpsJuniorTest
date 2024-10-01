@@ -9,7 +9,7 @@
 # - безопасный(safety)
 # - общий(shared)
 # - продакшн(production)
-profile: production
+profile: basic
 
 # Позволяет выводить результаты в формате SARIF
 # sarif_file: result.sarif
@@ -74,7 +74,8 @@ enable_list:
   # Проверка использования устаревших модулей
 
 # Список правил, которые выдают предупреждения, а не ошибки
-# warn_list:
+warn_list:
+  - syntax-check[unknown-module]
 #   - skip_this_tag  # Предупреждения для данного тега игнорируются
 #   - experimental  # Правила в экспериментальном режиме
 

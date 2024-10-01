@@ -1,3 +1,1 @@
-# Игнорировать ошибки длины строки в следующих файлах
-rules/docker_compose/meta/main.yaml line-length
-roles/nginx/meta/main.yaml line-length
+# Игнорировать ошибки в следующих файлах
