@@ -39,10 +39,9 @@
   notify: Перезапустить контейнер web
 
 - name: Запуск docker-compose
-  ansible.builtin.shell: docker compose -f "/home/{{ ansible_user }}/php_app/docker-compose.yml" up -d
-  args:
-    chdir: "/home/{{ ansible_user }}/php_app"
+  community.docker.docker_compose_v2:
+    project_src: "/home/{{ ansible_user }}/php_app"
+    state: present
   register: docker_compose_result
-  failed_when: docker_compose_result.rc != 0
   retries: 5
   delay: 15
