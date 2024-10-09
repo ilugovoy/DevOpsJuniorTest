@@ -34,7 +34,8 @@ services:
       - backend-net
       - frontend-net
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
   nginx:
