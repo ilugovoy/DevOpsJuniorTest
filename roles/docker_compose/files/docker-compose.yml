@@ -18,7 +18,7 @@ services:
       timeout: 10s
       retries: 3
     networks:
-      - my-network
+      - frontend-net
     restart: unless-stopped
 
   web:
@@ -31,7 +31,8 @@ services:
     volumes:
       - ./src:/var/www/html
     networks:
-      - my-network
+      - backend-net
+      - frontend-net
     depends_on:
       - db
     restart: unless-stopped
@@ -43,13 +44,15 @@ services:
       - "8080:80"
     volumes:
       - ./src:/var/www/html
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # :ro режим только для чтения
     depends_on:
       - web
     networks:
-      - my-network
+      - backend-net
     restart: unless-stopped
 
 networks:
-  my-network:
+  frontend-net:
+    driver: bridge
+  backend-net:
     driver: bridge
