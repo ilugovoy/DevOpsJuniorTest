@@ -1,7 +1,0 @@
----
-- name: nginx - Копирование конфигурации Nginx из шаблона
-  ansible.builtin.template:
-    src: nginx.conf.j2
-    dest: "/home/{{ ansible_user }}/php_app/nginx.conf"
-  notify:
-    - Перезапустить Nginx в контейнере
