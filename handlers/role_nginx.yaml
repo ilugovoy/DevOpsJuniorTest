@@ -1,0 +1,5 @@
+---
+- name: Перезапустить Nginx в контейнере
+  command: docker compose restart nginx
+  args:
+    chdir: /home/{{ ansible_user }}/php_app

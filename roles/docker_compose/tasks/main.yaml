@@ -1,0 +1,47 @@
+---
+- name: compose - Определение app_dir
+  set_fact:
+    app_dir: "/home/{{ ansible_user }}/php_app"
+
+- name: compose - Определение docker_compose_file
+  set_fact:
+    docker_compose_file: "{{ app_dir }}/docker-compose.yml"
+
+- name: compose - Копирование Dockerfile на удалённый сервер
+  copy:
+    src: Dockerfile
+    dest: "/home/{{ ansible_user }}/php_app/Dockerfile"
+
+- name: compose - Копирование docker-compose.yml на удалённый сервер
+  copy:
+    src: files/docker-compose.yml
+    dest: "/home/{{ ansible_user }}/php_app/docker-compose.yml"
+
+- name: compose - Копирование init.sql на удалённый сервер
+  copy:
+    src: init.sql
+    dest: "/home/{{ ansible_user }}/php_app/init.sql"
+
+- name: compose - Копирование .env файла на удалённый сервер
+  copy:
+    src: .env
+    dest: "/home/{{ ansible_user }}/php_app/.env"
+
+- name: compose - Синхронизация файлов исходного кода с файлами на удалённом сервере
+  ansible.builtin.synchronize:
+    mode: push
+    src: src/
+    dest: "/home/{{ ansible_user }}/php_app/src/"
+    recursive: true
+    rsync_opts:
+      # yamllint disable-line rule:line-length
+      - "--rsync-path='sudo -u {{ ansible_user }} rsync'"  # Для запуска без ввода пароля
+  notify: Перезапустить контейнер web
+
+- name: compose - Запуск docker-compose
+  community.docker.docker_compose_v2:
+    project_src: "/home/{{ ansible_user }}/php_app"
+    state: present
+  register: docker_compose_result
+  retries: 5
+  delay: 15

@@ -1,0 +1,6 @@
+---
+- name: Перезапуск службы SSH
+  service:
+    name: ssh
+    state: restarted
+  when: user_add_result.changed
