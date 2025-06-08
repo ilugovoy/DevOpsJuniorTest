@@ -1,7 +1,0 @@
----
-- hosts: test
-  become: true
-  roles:
-    - preconfig
-    - nginx
-    - docker_compose
